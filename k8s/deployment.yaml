@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: next-notes-deployment
-  namespace: next-notes
 spec:
   replicas: 2
   selector:
