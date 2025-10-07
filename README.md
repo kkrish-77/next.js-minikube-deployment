@@ -1,115 +1,117 @@
-Next.js Minikube Deployment
-🚀 Overview
-This project demonstrates how to containerize a Next.js application, automate its CI/CD workflow using Docker, GitHub Actions, and the GitHub Container Registry (GHCR), and deploy it to a local Kubernetes cluster with Minikube. The repository is created as part of a DevOps Internship Assessment to showcase key DevOps practices—automation, infrastructure-as-code, and efficient Kubernetes deployment.
+## 🚀 Next.js Minikube Deployment
 
-📝 Assessment Objectives
-Containerize a Next.js app using Docker (with best practices)
+This project demonstrates how to containerize a Next.js app, automate CI/CD with Docker, GitHub Actions, and GitHub Container Registry (GHCR), and deploy to a local Kubernetes cluster using Minikube. It was created for a DevOps internship assessment to showcase automation, infrastructure-as-code, and efficient K8s deployment practices.
 
-Automate build & image push to GHCR using GitHub Actions
+***
 
-Deploy to Kubernetes (Minikube) via manifest files
+### 📝 **Objectives**
 
-Document all processes with clear setup, usage, and deployment instructions
+- **Containerize** a Next.js app using Docker best practices
+- **Automate** build & image push to GHCR via GitHub Actions
+- **Deploy** with Kubernetes manifests on Minikube
+- **Document** setup, usage, and deployment clearly
 
-🗂️ Repository Structure
-text
+***
+
+### 🗂️ **Repository Structure**
+
+```
 .
-├── .github/
-│   └── workflows/         # GitHub Actions workflow(s)
-├── k8s/                   # Kubernetes manifests (deployment, service)
-├── src/app/               # Source code of Next.js application
-├── Dockerfile             # Docker image definition
-├── README.md              # Project documentation
-├── package.json           # Project dependencies
-└── ...                    # Additional configs, lockfiles, etc.
-🛠️ Technology Stack
-Next.js
+├── .github/workflows/       # GitHub Actions workflows
+├── k8s/                    # Kubernetes manifests (deployment, service)
+├── src/app/                # Next.js app source code
+├── Dockerfile              # Container image definition
+├── README.md               # Project documentation
+├── package.json            # Dependencies
+└── ...                     # Additional configs, lockfiles, etc.
+```
 
-Docker
+***
 
-Kubernetes (via Minikube)
+### 🛠️ **Tech Stack**
 
-GitHub Actions
+- Next.js
+- Docker
+- Kubernetes (Minikube)
+- GitHub Actions
+- GitHub Container Registry (GHCR)
+- TypeScript
 
-GitHub Container Registry (GHCR)
+***
 
-TypeScript
+### ⚡ **Quick Start**
 
-⚡ Quick Start
-1. Local Development
-bash
-# Clone the repository
+#### 1. **Clone Repository**
+
+```bash
 git clone https://github.com/kkrish-77/next.js-minikube-deployment.git
 cd next.js-minikube-deployment
+```
 
-# Install dependencies
+#### 2. **Install Dependencies**
+
+```bash
 npm install
+```
 
-# Run the development server
+#### 3. **Run Locally (Dev Mode)**
+
+```bash
 npm run dev
-# App is now running at http://localhost:3000
-2. Docker Containerization
-bash
-# Build Docker image (replace <tag> as needed)
-docker build -t ghcr.io/<your-github-username>/nextjs-minikube:<tag> .
+# App runs at http://localhost:3000
+```
 
-# Run locally (optional)
-docker run -p 3000:3000 ghcr.io/<your-github-username>/nextjs-minikube:<tag>
-3. GitHub Actions - CI/CD
-GitHub Actions is configured to:
+#### 4. **Docker Build**
 
-Build the Docker image on every push to the main branch
+```bash
+docker build -t ghcr.io/<your-username>/nextjs-minikube:latest .
+docker run -p 3000:3000 ghcr.io/<your-username>/nextjs-minikube:latest
+```
 
-Tag the image by commit SHA or version
+#### 5. **CI/CD via GitHub Actions**
 
-Push the image to the GitHub Container Registry (GHCR)
+- On push to `main` branch:
+  - Docker image builds, tags by commit/semver, and pushes to GHCR.
+  - Requires GHCR_TOKEN (PAT with `write:packages`).
 
-Secrets Required:
+#### 6. **Kubernetes Deployment (Minikube)**
 
-GHCR_TOKEN: GitHub PAT with write:packages scope
-
-See .github/workflows/ for the pipeline definition.
-
-4. Kubernetes Deployment (Minikube)
-a. Start Minikube
-bash
+```bash
 minikube start
-b. Pull Image (if not public)
-Authenticate your local Docker to GHCR if needed.
-
-c. Apply Kubernetes Manifests
-bash
-# Inside the project root
 kubectl apply -f k8s/deployment.yaml
 kubectl apply -f k8s/service.yaml
-d. Access the Application
-bash
 minikube service nextjs-service
-# This will open the app in your default browser
-📂 Project Highlights
-Dockerfile: Multi-stage build for efficient, production-ready images
+```
 
-Actions Workflow: End-to-end automation—build, tag, and push to GHCR on main branch update
+***
 
-Kubernetes Manifests:
+### 📦 **Project Highlights**
 
-deployment.yaml: Configures replicas, health checks (livenessProbe/readinessProbe)
+- **Dockerfile:** Production-ready images
+- **GitHub Actions:** Fully automated—build, tag, and push to GHCR
+- **Kubernetes:** Manifests with replicas, health checks, NodePort service for web access
 
-service.yaml: Exposes your app via NodePort for easy access via Minikube
+***
 
-🧰 Useful Commands
-Task	Command
-Build Docker image	docker build -t <image:tag> .
-Run container locally	docker run -p 3000:3000 <image:tag>
-Apply k8s manifests	kubectl apply -f k8s/
-Get pod status	kubectl get pods
-View service (Minikube)	minikube service nextjs-service
-📝 References
-Next.js Official Docs
+### 🧰 **Useful Commands**
 
-Minikube Tutorials
+| Task                  | Command                                    |
+|-----------------------|--------------------------------------------|
+| Build Docker image    | `docker build -t image:tag .`              |
+| Run container locally | `docker run -p 3000:3000 image:tag`        |
+| Apply K8s manifests   | `kubectl apply -f k8s/`                    |
+| Get pod status        | `kubectl get pods`                         |
+| Access app (Minikube) | `minikube service nextjs-service`          |
 
-GitHub Actions Docs
+***
 
-📃 License
-This project is open source under the MIT License.
+### 📝 **References**
+- [Next.js Documentation](https://nextjs.org/docs/)
+- [Minikube Getting Started](https://minikube.sigs.k8s.io/docs/start/)
+- [GitHub Actions](https://docs.github.com/en/actions)
+
+***
+
+### 📃 **License**
+
+Open source under the MIT License.
