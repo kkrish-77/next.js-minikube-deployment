@@ -1,90 +1,115 @@
-# Notes App
+Next.js Minikube Deployment
+🚀 Overview
+This project demonstrates how to containerize a Next.js application, automate its CI/CD workflow using Docker, GitHub Actions, and the GitHub Container Registry (GHCR), and deploy it to a local Kubernetes cluster with Minikube. The repository is created as part of a DevOps Internship Assessment to showcase key DevOps practices—automation, infrastructure-as-code, and efficient Kubernetes deployment.
 
-This is a note taking app built with Next.js, React, and Tailwind CSS.
+📝 Assessment Objectives
+Containerize a Next.js app using Docker (with best practices)
 
-## Pages
+Automate build & image push to GHCR using GitHub Actions
 
-**page.tsx**
+Deploy to Kubernetes (Minikube) via manifest files
 
-- Main app component that renders child components
-- Manages state for:
-  - notes array
-  - selected color
-  - modal open state
-  - editing note content/id
-- Renders:
-  - ExampleSideNavBar
-  - NotesGrid
-  - NoteModal conditionally
-- Provides open/close handlers for modal
+Document all processes with clear setup, usage, and deployment instructions
 
-**layout.tsx**
+🗂️ Repository Structure
+text
+.
+├── .github/
+│   └── workflows/         # GitHub Actions workflow(s)
+├── k8s/                   # Kubernetes manifests (deployment, service)
+├── src/app/               # Source code of Next.js application
+├── Dockerfile             # Docker image definition
+├── README.md              # Project documentation
+├── package.json           # Project dependencies
+└── ...                    # Additional configs, lockfiles, etc.
+🛠️ Technology Stack
+Next.js
 
-- Provides basic page wrapper with layout
-- Renders page children content
+Docker
 
-**HeaderNav.tsx**
+Kubernetes (via Minikube)
 
-- Header navigation component
-- Dropdown menus for filtering
-- Renders logo, search, menu links
+GitHub Actions
 
-**Note.tsx**
+GitHub Container Registry (GHCR)
 
-- Defines Note interface for type safety
-- Renders formatted note content
-- Truncates long text using CSS
+TypeScript
 
-**NoteGrid.tsx**
+⚡ Quick Start
+1. Local Development
+bash
+# Clone the repository
+git clone https://github.com/kkrish-77/next.js-minikube-deployment.git
+cd next.js-minikube-deployment
 
-- Displays grid layout of notes
-- Opens edit modal when note clicked
-- Manages editing state
+# Install dependencies
+npm install
 
-**DatePicker.tsx**
+# Run the development server
+npm run dev
+# App is now running at http://localhost:3000
+2. Docker Containerization
+bash
+# Build Docker image (replace <tag> as needed)
+docker build -t ghcr.io/<your-github-username>/nextjs-minikube:<tag> .
 
-- Wraps Flowbite datepicker component
-- Allows selecting date range filter
+# Run locally (optional)
+docker run -p 3000:3000 ghcr.io/<your-github-username>/nextjs-minikube:<tag>
+3. GitHub Actions - CI/CD
+GitHub Actions is configured to:
 
-**ExampleSideNav.tsx**
+Build the Docker image on every push to the main branch
 
-- Side navigation menu
-- Adds new notes when color clicked
-- Manages menu open state
+Tag the image by commit SHA or version
 
-**NoteModal.tsx**
+Push the image to the GitHub Container Registry (GHCR)
 
-- Modal popup to create/edit notes
-- Handles form content and submission
-- Saves new note or updates existing
+Secrets Required:
 
-**TimeStampButton.tsx**
+GHCR_TOKEN: GitHub PAT with write:packages scope
 
-- Button displaying note timestamp
-- Click to open edit modal for note
+See .github/workflows/ for the pipeline definition.
 
-## Usage
+4. Kubernetes Deployment (Minikube)
+a. Start Minikube
+bash
+minikube start
+b. Pull Image (if not public)
+Authenticate your local Docker to GHCR if needed.
 
-To run the app locally:
+c. Apply Kubernetes Manifests
+bash
+# Inside the project root
+kubectl apply -f k8s/deployment.yaml
+kubectl apply -f k8s/service.yaml
+d. Access the Application
+bash
+minikube service nextjs-service
+# This will open the app in your default browser
+📂 Project Highlights
+Dockerfile: Multi-stage build for efficient, production-ready images
 
-1. Clone the repo
-2. Run `npm install`
-3. Run `npm run dev`
-4. App will be running on `localhost:3000`
+Actions Workflow: End-to-end automation—build, tag, and push to GHCR on main branch update
 
-Main functionality:
+Kubernetes Manifests:
 
-- Click side menu colors to add color categorized notes
-- Each note has functionality to edit content and recategorize note color
+deployment.yaml: Configures replicas, health checks (livenessProbe/readinessProbe)
 
-## Future implementations/continued work
+service.yaml: Exposes your app via NodePort for easy access via Minikube
 
-This was my first time working with the NextJS framework. Had a lot of difficulty maintaining state, but working through the issues as they come along.
+🧰 Useful Commands
+Task	Command
+Build Docker image	docker build -t <image:tag> .
+Run container locally	docker run -p 3000:3000 <image:tag>
+Apply k8s manifests	kubectl apply -f k8s/
+Get pod status	kubectl get pods
+View service (Minikube)	minikube service nextjs-service
+📝 References
+Next.js Official Docs
 
-I would like to add a MongoDB as the backend to help deal with passing note props between components.
+Minikube Tutorials
 
-Also, currently the header navigation is non-functional. Hooking the application to a MongoDB will allow the header navigation's filtering to be implemented much easier.
+GitHub Actions Docs
 
-## License
-
-This project is open source and available under the [MIT License](LICENSE).
+📃 License
+This project is open source under the MIT License.
